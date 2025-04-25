@@ -61,5 +61,6 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.7.8")
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.core.splashscreen)
 
 }

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.mapsapp.ui.navigation.MainNavigationWrapper
+import com.example.mapsapp.ui.screens.MapsScreen
 import com.example.mapsapp.ui.screens.PermissionScreen
 import com.example.mapsapp.ui.theme.MapsAppTheme
 

@@ -34,7 +34,7 @@ import android.provider.Settings
 
 
 @Composable
-fun PermissionScreen() {
+fun PermissionScreen(navigateToDrawer: () -> Unit) {
     val activity = LocalContext.current
     val viewModel = viewModel<PermissionViewModel>()
 

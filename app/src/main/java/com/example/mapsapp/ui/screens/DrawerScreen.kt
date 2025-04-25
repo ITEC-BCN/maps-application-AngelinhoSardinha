@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.rememberNavController
 import com.example.mapsapp.ui.navigation.Destination
+import com.example.mapsapp.ui.navigation.InternalNavigationWrapper
 import kotlinx.coroutines.launch
 
 enum class DrawerItem(

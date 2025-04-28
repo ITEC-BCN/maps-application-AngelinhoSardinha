@@ -20,8 +20,8 @@ import com.example.mapsapp.ui.theme.MapsAppTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         installSplashScreen()
+        enableEdgeToEdge()
         setContent {
             MapsAppTheme {
                 MainNavigationWrapper()

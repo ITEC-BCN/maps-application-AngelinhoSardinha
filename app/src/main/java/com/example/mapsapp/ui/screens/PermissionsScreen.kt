@@ -71,31 +71,38 @@ fun PermissionScreen(navigateToDrawer: () -> Unit) {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Estado de los permisos:", fontSize = 24.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(16.dp))
         permissions.forEach { permission ->
             val status = permissionsStatus[permission]
             val label = when (status) {
-                null -> "Solicitando..."
-                PermissionStatus.Granted -> "Concedido"
-                PermissionStatus.Denied -> "Denegado"
-                PermissionStatus.PermanentlyDenied -> "Denegado permanentemente"
-                else -> {}
+                null -> "Requesting..."
+                PermissionStatus.Granted -> "Granted"
+                PermissionStatus.Denied -> "Denied"
+                PermissionStatus.PermanentlyDenied -> "Permanently denied"
             }
             val permissionName = permission.removePrefix("android.permission.")
             Text("$permissionName: $label")
         }
         Spacer(modifier = Modifier.height(16.dp))
-
-        if (permissions.any {permissionsStatus[it] == PermissionStatus.Denied}) {
-            Button(onClick = {launcher.launch(permissions.toTypedArray())}) {
-                Text("Solicitar permisos nuevamente")
+        if (permissions.all {
+                permissionsStatus[it] == PermissionStatus.Granted
+            }) {
+            navigateToDrawer()
+        } else if (permissions.any {
+                permissionsStatus[it] == PermissionStatus.Denied
+            }) {
+            Button(onClick = {
+                launcher.launch(permissions.toTypedArray())
+            }) {
+                Text("Apply again")
             }
-        }
-        if (permissions.any {permissionsStatus[it] == PermissionStatus.PermanentlyDenied}) {
+        } else if (permissions.any {
+                permissionsStatus[it] == PermissionStatus.PermanentlyDenied
+            }) {
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
@@ -103,7 +110,7 @@ fun PermissionScreen(navigateToDrawer: () -> Unit) {
                 }
                 activity!!.startActivity(intent)
             }) {
-                Text("Abrir ajustes")
+                Text("Go to settings")
             }
         }
     }

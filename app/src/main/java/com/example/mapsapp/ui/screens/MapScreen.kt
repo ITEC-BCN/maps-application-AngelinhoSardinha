@@ -13,7 +13,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
-fun MapScreen(modifier: Modifier = Modifier, navigateToMarker: (String) -> Unit) {
+fun MapScreen(modifier: Modifier = Modifier, navigateToMarker: (Double, Double) -> Unit) {
     Column(modifier.fillMaxSize()) {
         val itb = LatLng(41.4534225, 2.1837151)
         val cameraPositionState = rememberCameraPositionState {
@@ -24,7 +24,7 @@ fun MapScreen(modifier: Modifier = Modifier, navigateToMarker: (String) -> Unit)
             onMapClick = {
                 Log.d("MAP CLICKED", it.toString())
             }, onMapLongClick = {
-                navigateToMarker(it.toString())
+                navigateToMarker(it.latitude, it.longitude)
                 Log.d("MAP CLICKED LONG", it.toString())
             }) {
             Marker(

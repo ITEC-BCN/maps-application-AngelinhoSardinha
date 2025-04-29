@@ -12,14 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CreateMarkerScreen(coordenadas: String, modifier: Modifier, navigateToMarker: () -> Unit) {
-    Column(modifier = modifier.fillMaxSize()) {
-        Text(text = "Crear Marcador", style = MaterialTheme.typography.headlineLarge)
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Coordenadas: $coordenadas")
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = navigateToMarker) {
-            Text(text = "Guardar Marcador")
-        }
-    }
+fun CreateMarkerScreen() {
+    Text("Hola Mundo")
 }

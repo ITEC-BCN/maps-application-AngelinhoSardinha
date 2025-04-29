@@ -6,6 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.mapsapp.ui.navigation.Destination.MarkerCreation
+import com.example.mapsapp.ui.screens.CreateMarkerScreen
 import com.example.mapsapp.ui.screens.MapScreen
 import com.example.mapsapp.ui.screens.MarkerListScreen
 import com.example.mapsapp.viewmodel.MarkerViewModel
@@ -16,17 +18,16 @@ fun InternalNavigationWrapper(navController: NavHostController, padding: Modifie
         composable<Destination.Map>{
             MapScreen(
                 modifier = padding,
-                navigateToMarker = {
-                    navController.navigate(Destination.MarkerCreation){
-                        popUpTo(Destination.Map){
-                            saveState = true
-                        }
-                    }
+                navigateToMarker = {latitud, longitud ->
+                    navController.navigate(MarkerCreation(latitud, longitud))
                 }
             )
         }
         composable<Destination.List> {
             MarkerListScreen()
+        }
+        composable<MarkerCreation> {
+            CreateMarkerScreen()
         }
     }
 }

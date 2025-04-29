@@ -14,10 +14,10 @@ sealed class Destination {
 
     @Serializable
     object List : Destination()
-    /*
-    @Serializable
-    data class MarkerCreation(coordenadas: LatLng)
 
     @Serializable
-    data class MarkerDetail(id : Int)*/
+    data class MarkerCreation(val coordenadas: String)
+
+//    @Serializable
+//    data class MarkerDetail(id : Int)
 }

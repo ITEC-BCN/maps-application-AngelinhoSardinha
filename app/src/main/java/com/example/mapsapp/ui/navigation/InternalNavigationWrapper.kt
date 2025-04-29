@@ -14,11 +14,19 @@ import com.example.mapsapp.viewmodel.MarkerViewModel
 fun InternalNavigationWrapper(navController: NavHostController, padding: Modifier) {
     NavHost(navController, Destination.Map){
         composable<Destination.Map>{
-            MapScreen()
+            MapScreen(
+                modifier = padding,
+                navigateToMarker = {
+                    navController.navigate(Destination.MarkerCreation){
+                        popUpTo(Destination.Map){
+                            saveState = true
+                        }
+                    }
+                }
+            )
         }
         composable<Destination.List> {
-//            MarkerListScreen(
-//                markerViewModel = MarkerViewModel(), navigateToDetail)
+            MarkerListScreen()
         }
     }
 }

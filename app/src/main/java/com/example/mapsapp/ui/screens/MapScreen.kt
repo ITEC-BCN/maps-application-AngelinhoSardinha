@@ -13,7 +13,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
-fun MapsScreen(modifier: Modifier = Modifier) {
+fun MapScreen(modifier: Modifier = Modifier) {
     Column(modifier.fillMaxSize()) {
         val itb = LatLng(41.4534225, 2.1837151)
         val cameraPositionState = rememberCameraPositionState {
@@ -30,6 +30,5 @@ fun MapsScreen(modifier: Modifier = Modifier) {
                 state = MarkerState(position = itb), title = "ITB",
                 snippet = "Marker at ITB")
         }
-
     }
 }

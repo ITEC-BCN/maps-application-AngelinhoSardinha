@@ -19,6 +19,10 @@ android {
     namespace = "com.example.mapsapp"
     compileSdk = 35
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.example.mapsapp"
         minSdk = 24

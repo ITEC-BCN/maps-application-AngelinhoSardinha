@@ -15,12 +15,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class MySupabaseClient {
-    lateinit var storage: Storage
-
-    private val supabaseUrl = BuildConfig.SUPABASE_URL
-    private val supabaseKey = BuildConfig.SUPABASE_KEY
-
     lateinit var client: SupabaseClient
+    lateinit var storage: Storage
+    private val supabaseUrl = BuildConfig.SUPABASE_URL
+
+    private val supabaseKey = BuildConfig.SUPABASE_KEY
     constructor() {
         client = createSupabaseClient(
             supabaseUrl = supabaseUrl,
@@ -32,24 +31,24 @@ class MySupabaseClient {
         storage = client.storage
     }
     //SQL operations
-    suspend fun getAllStudents(): List<Marker> {
-        return client.from("Student").select().decodeList<Marker>()
+    suspend fun getAllMarkers(): List<Marker> {
+        return client.from("Marker").select().decodeList<Marker>()
     }
 
-    suspend fun getStudent(id: String): Marker{
-        return client.from("Student").select {
+    suspend fun getMarkers(id: String): Marker {
+        return client.from("Marker").select {
             filter {
                 eq("id", id)
             }
         }.decodeSingle<Marker>()
     }
 
-    suspend fun insertStudent(name: String, student1: Double, student: String){
-        client.from("Student").insert(student)
+    suspend fun insertMarker(marker: Marker) {
+        client.from("Marker").insert(marker)
     }
 
-    suspend fun deleteStudent(id: String){
-        client.from("Student").delete{ filter { eq("id", id) } }
+    suspend fun deleteMarker(id: String){
+        client.from("Marker").delete{ filter { eq("id", id) } }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -62,12 +61,13 @@ class MySupabaseClient {
 
     fun buildImageUrl(imageFileName: String) = "${this.supabaseUrl}/storage/v1/object/public/images/${imageFileName}"
 
-    suspend fun updateStudent(id: String, name: String, mark: Double, imageName: String, imageFile: ByteArray) {
-        val imageName = storage.from("images").update(path = imageName, data = imageFile)
-        client.from("Student").update({
-            set("name", name)
-            set("mark", mark)
-            set("image", buildImageUrl(imageFileName = imageName.path))
+    suspend fun updateMarker(id: Int, title: String, description: String, latlng: String, imageName: String, imageFile: ByteArray) {
+        val updatedImageName = storage.from("images").update(path = imageName, data = imageFile)
+        client.from("Marker").update({
+            set("name", title)
+            set("description", description)
+            set("latlng", latlng)
+            set("image", buildImageUrl(imageFileName = updatedImageName.path))
         }) {
             filter {
                 eq("id", id)

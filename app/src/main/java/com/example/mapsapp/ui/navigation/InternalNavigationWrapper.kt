@@ -1,5 +1,7 @@
 package com.example.mapsapp.ui.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -11,24 +13,31 @@ import com.example.mapsapp.ui.screens.CreateMarkerScreen
 import com.example.mapsapp.ui.screens.MapScreen
 import com.example.mapsapp.ui.screens.MarkerListScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun InternalNavigationWrapper(navController: NavHostController, modifier: Modifier) {
     NavHost(navController, Destination.Map) {
         composable<Destination.Map> {
             MapScreen(
                 modifier = modifier,
-                navigateToMarker = { latitud, longitud ->
-                    navController.navigate(MarkerCreation(latitud, longitud))
+                navigateToMarker = { latlng ->
+                    navController.navigate(MarkerCreation(latlng))
                 }
             )
         }
         composable<Destination.List> {
             MarkerListScreen()
         }
-        composable<MarkerCreation> {
-            CreateMarkerScreen(navigateToCamera = {
-                navController.navigate(Destination.Camera)
-            })
+        composable<MarkerCreation> { backStackEntry ->
+            val latlng = backStackEntry.arguments?.getString("latlng") ?: ""
+            CreateMarkerScreen(
+                cordenadas = latlng,
+                NavigateToBack = {
+                    navController.navigate(Destination.Map) {
+                        popUpTo(Destination.Map) { inclusive = true }
+                    }
+                }
+            )
         }
         composable<Destination.Camera> {
             CameraScreen()

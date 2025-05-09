@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -46,8 +45,7 @@ fun MarkersScreen(navigateToDetail: (String) -> Unit) {
 
     val name by myViewModel.name.observeAsState("")
     val description by myViewModel.description.observeAsState("")
-    val latitude by myViewModel.latitude.observeAsState("")
-    val longitude by myViewModel.longitude.observeAsState("")
+    val latlng by myViewModel.latitude.observeAsState("")
     var imageUrl by remember { mutableStateOf("") }
 
     Column(Modifier.fillMaxSize()) {
@@ -61,15 +59,13 @@ fun MarkersScreen(navigateToDetail: (String) -> Unit) {
             Text("Create new marker", fontSize = 24.sp, fontWeight = FontWeight.Bold)
             TextField(value = name, onValueChange = { myViewModel.editName(it) }, label = { Text("Name") })
             TextField(value = description, onValueChange = { myViewModel.editDescription(it) }, label = { Text("Description") })
-            TextField(value = latitude, onValueChange = { myViewModel.editLatitude(it) }, label = { Text("Latitude") })
-            TextField(value = longitude, onValueChange = { myViewModel.editLongitude(it) }, label = { Text("Longitude") })
+            TextField(value = latlng, onValueChange = { myViewModel.editLatitude(it) }, label = { Text("Latitude") })
             TextField(value = imageUrl, onValueChange = { imageUrl = it }, label = { Text("Image URL") })
             Button(onClick = {
                 myViewModel.insertNewMarker(
                     name,
                     description,
-                    latitude.toLongOrNull() ?: 0,
-                    longitude.toLongOrNull() ?: 0,
+                    latlng,
                     imageUrl
                 )
             }) {
@@ -110,7 +106,7 @@ fun MarkersScreen(navigateToDetail: (String) -> Unit) {
                         Icon(Icons.Default.Delete, contentDescription = "Delete")
                     }
                 }) {
-//                    MarkerItem(marker = marker) { navigateToDetail(marker.id.toString()) }
+                    MarkerItem(marker = marker) { navigateToDetail(marker.id.toString()) }
                 }
             }
         }
@@ -129,7 +125,7 @@ fun MarkerItem(marker: Marker, onClick: () -> Unit) {
     ) {
         Column {
             Text("Name: ${marker.name}", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Text("Lat: ${marker.latitude}, Lng: ${marker.longitude}")
+            Text("Coordinates: ${marker.latlng ?: "N/A"}")
             Text("Description: ${marker.description}")
         }
     }

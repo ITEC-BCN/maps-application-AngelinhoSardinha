@@ -37,14 +37,13 @@ package com.example.supabasetest.viewmodel
             }
         }
 
-        fun insertNewMarker(name: String, description: String, latitude: Double, longitude: Double, image: String) {
+        fun insertNewMarker(name: String, description: String, coordenadas : String, image: String) {
             val newMarker = Marker(
-                id = "", // Genera un ID único si es necesario
+                id = 0, // Genera un ID único si es necesario
                 name = name,
                 description = description,
-                latitude = latitude,
-                longitude = longitude,
-                image = image
+                image = image,
+                latlng = coordenadas
             )
             CoroutineScope(Dispatchers.IO).launch {
                 database.insertMarker(newMarker) // Asegúrate de que esta función exista
@@ -65,12 +64,12 @@ package com.example.supabasetest.viewmodel
         fun editLongitude(value: String) { longitude.value = value }
 
         @RequiresApi(Build.VERSION_CODES.O)
-        fun insertNewMarkerWithImage(name: String, description: String, latitude: Double, longitude: Double, imageBitmap: Bitmap?) {
+        fun insertNewMarkerWithImage(name: String, description: String, latlng : String, imageBitmap: Bitmap?) {
             val stream = ByteArrayOutputStream()
             imageBitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
             CoroutineScope(Dispatchers.IO).launch {
                 val imageName = database.uploadImage(stream.toByteArray()) // Asegúrate de que esta función exista
-                insertNewMarker(name, description, latitude, longitude, imageName)
+                insertNewMarker(name, description, latlng, imageName)
             }
         }
 

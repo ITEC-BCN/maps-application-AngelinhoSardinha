@@ -52,7 +52,7 @@ fun MarkerListScreen(onMarkerClick: (Marker) -> Unit = {}) {
                 .padding(top = 75.dp) // Agrega un padding superior para evitar que el primer ítem se corte
         ) {
             items(markers) { marker ->
-                MarkerItem(marker = marker) {
+                viewModel.MarkerItem(marker = marker) {
                     onMarkerClick(marker)
                 }
                 Spacer(modifier = Modifier.height(8.dp))

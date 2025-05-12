@@ -8,8 +8,6 @@ import androidx.compose.ui.Modifier
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
@@ -24,13 +22,8 @@ fun MapScreen(modifier: Modifier = Modifier, navigateToMarker: (String) -> Unit)
             onMapClick = {
                 Log.d("MAP CLICKED", it.toString())
             }, onMapLongClick = {
-                navigateToMarker(it.longitude.toString() + "," + it.latitude.toString())
+                navigateToMarker(it.latitude.toString() + "," + it.longitude.toString())
                 Log.d("MAP CLICKED LONG", it.toString())
-            }) {
-            Marker(
-                state = MarkerState(position = itb), title = "ITB",
-                snippet = "Marker at ITB"
-            )
-        }
+            })
     }
 }

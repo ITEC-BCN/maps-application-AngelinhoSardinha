@@ -23,7 +23,7 @@ import com.example.mapsapp.data.model.Marker
 import com.example.supabasetest.viewmodel.MyViewModel
 
 @Composable
-fun MarkerListScreen(onMarkerClick: (Marker) -> Unit = {}) {
+fun MarkerListScreen(navigateToDetail: (Int) -> Unit = {}) {
     val viewModel = viewModel<MyViewModel>()
     val markers by viewModel.markersList.observeAsState(emptyList())
 
@@ -53,7 +53,7 @@ fun MarkerListScreen(onMarkerClick: (Marker) -> Unit = {}) {
         ) {
             items(markers) { marker ->
                 viewModel.MarkerItem(marker = marker) {
-                    onMarkerClick(marker)
+                    navigateToDetail(marker.id)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }

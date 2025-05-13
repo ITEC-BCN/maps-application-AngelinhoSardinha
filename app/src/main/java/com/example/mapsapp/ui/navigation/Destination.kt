@@ -23,5 +23,5 @@ sealed class Destination {
     object Camera : Destination()
 
     @Serializable
-    data class MarkerDetail(val id : Int)
+    data class MarkerDetail(val id : Int) : Destination()
 }

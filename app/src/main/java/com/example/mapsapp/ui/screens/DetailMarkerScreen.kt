@@ -28,7 +28,7 @@ import coil.compose.rememberAsyncImagePainter
 
 
 @Composable
-fun DetailMarkerScreen(navigateBack: () -> Unit) {
+fun DetailMarkerScreen(id : Int, NavigateToBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -91,7 +91,7 @@ fun DetailMarkerScreen(navigateBack: () -> Unit) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = navigateBack,
+                    onClick = NavigateToBack,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     )

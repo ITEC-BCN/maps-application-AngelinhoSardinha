@@ -82,7 +82,7 @@ fun CreateMarkerScreen(cordenadas: String, navigateToBack: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Crear Marcador",
+            text = "Create Marker",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFFC8E6C9)

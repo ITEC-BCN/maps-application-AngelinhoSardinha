@@ -37,7 +37,7 @@ fun InternalNavigationWrapper(navController: NavHostController, modifier: Modifi
             val latlng = backStackEntry.arguments?.getString("latlng") ?: ""
             CreateMarkerScreen(
                 cordenadas = latlng,
-                NavigateToBack = {
+                navigateToBack = {
                     navController.navigate(Destination.Map) {
                         popUpTo(Destination.Map) { inclusive = true }
                     }

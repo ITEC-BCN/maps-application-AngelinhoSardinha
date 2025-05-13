@@ -50,7 +50,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
@@ -64,7 +63,6 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
     var description by remember { mutableStateOf(marker?.description ?: "") }
     supaBaseViewModel.getMarkerById(id)
 
-    Log.d("UpdateMarkerScreen", "Marker: ${id}")
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) { success ->
@@ -93,7 +91,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    colors = listOf(Color(0xFFBBDEFB), Color(0xFFE3F2FD))
+                    colors = listOf(Color(0xFF1B5E20), Color(0xFF2E7D32)) // Tonos verde oscuro
                 )
             )
             .padding(16.dp),
@@ -101,10 +99,10 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Editar Marcador",
+            text = "Update Marker",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF0D47A1)
+            color = Color(0xFFC8E6C9) // Verde menta claro
         )
 
         Card(
@@ -112,7 +110,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                 .fillMaxWidth()
                 .padding(8.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF388E3C)), // Verde intermedio
             elevation = CardDefaults.cardElevation(8.dp)
         ) {
             Column(
@@ -125,21 +123,37 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                     value = title,
                     onValueChange = { title = it },
                     label = { Text("Título") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color(0xFF2E7D32),
+                        unfocusedContainerColor = Color(0xFF1B5E20),
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White,
+                        focusedLabelColor = Color(0xFFA5D6A7),
+                        unfocusedLabelColor = Color(0xFFA5D6A7)
+                    )
                 )
 
                 TextField(
                     value = description,
                     onValueChange = { description = it },
                     label = { Text("Descripción") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color(0xFF2E7D32),
+                        unfocusedContainerColor = Color(0xFF1B5E20),
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White,
+                        focusedLabelColor = Color(0xFFA5D6A7),
+                        unfocusedLabelColor = Color(0xFFA5D6A7)
+                    )
                 )
 
                 Button(
                     onClick = { showDialog = true },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D47A1))
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF43A047))
                 ) {
                     Text(text = "Seleccionar Imagen", color = Color.White)
                 }
@@ -159,10 +173,6 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
 
         Button(
             onClick = {
-                Log.d(
-                    "UpdateMarkerScreen", "Updating marker with id: $id" +
-                            " title: $title, description: $description"
-                )
                 supaBaseViewModel.updateMarker(id, title, description, bitmap.value)
                 NavigateToBack()
             },
@@ -170,12 +180,11 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF64B5F6))
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF66BB6A)) // Verde vivo
         ) {
             Text(text = "Guardar Marcador", color = Color.White)
         }
 
-        //Boton de eliminar
         Button(
             onClick = {
                 supaBaseViewModel.deleteMarker(id)
@@ -185,7 +194,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE57373))
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB71C1C)) // Rojo oscuro para eliminar
         ) {
             Text(text = "Eliminar Marcador", color = Color.White)
         }
@@ -203,7 +212,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                     imageUri.value = uri
                     launcher.launch(uri!!)
                 }) {
-                    Text("Tomar Foto")
+                    Text("Tomar Foto", color = Color(0xFF1B5E20))
                 }
             },
             dismissButton = {
@@ -211,7 +220,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                     showDialog = false
                     pickImageLauncher.launch("image/*")
                 }) {
-                    Text("Elegir de Galería")
+                    Text("Elegir de Galería", color = Color(0xFF1B5E20))
                 }
             }
         )

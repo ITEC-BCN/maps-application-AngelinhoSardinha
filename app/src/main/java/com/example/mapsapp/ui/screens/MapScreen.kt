@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mapsapp.viewmodels.SupaBaseViewModel
 import com.example.supabasetest.viewmodel.MyViewModel
 import com.google.android.gms.maps.model.CameraPosition
@@ -18,13 +20,20 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun MapScreen(modifier: Modifier = Modifier, navigateToMarker: (String) -> Unit) {
-    val viewModel : SupaBaseViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    val viewModel : SupaBaseViewModel = viewModel()
     val markers = viewModel.markerList.observeAsState()
+
+    // ⚠️ Aquí se dispara la carga al entrar en el composable
+    LaunchedEffect(Unit) {
+        viewModel.getAllMarkers()
+    }
+
+    val itb = LatLng(41.4534225, 2.1837151)
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(itb, 17f)
+    }
+
     Column(modifier.fillMaxSize()) {
-        val itb = LatLng(41.4534225, 2.1837151)
-        val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(itb, 17f)
-        }
         GoogleMap(
             Modifier.fillMaxSize(), cameraPositionState = cameraPositionState,
             onMapClick = {

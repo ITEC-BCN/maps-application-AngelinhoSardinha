@@ -1,15 +1,11 @@
 package com.example.mapsapp.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,11 +15,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mapsapp.data.model.Marker
 import com.example.supabasetest.viewmodel.MyViewModel
 
 @Composable
-fun MarkerListScreen(navigateToDetail: (Int) -> Unit = {}) {
+fun MarkerListScreen(navigateToUpdate: (Int) -> Unit = {}) {
     val viewModel = viewModel<MyViewModel>()
     val markers by viewModel.markersList.observeAsState(emptyList())
 
@@ -53,7 +48,7 @@ fun MarkerListScreen(navigateToDetail: (Int) -> Unit = {}) {
         ) {
             items(markers) { marker ->
                 viewModel.MarkerItem(marker = marker) {
-                    navigateToDetail(marker.id)
+                    navigateToUpdate(marker.id)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }

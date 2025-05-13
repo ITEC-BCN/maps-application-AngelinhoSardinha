@@ -70,7 +70,7 @@ package com.example.supabasetest.viewmodel
             }
         }
 
-        fun deleteMarker(id: String) {
+        fun deleteMarker(id: Int) {
             CoroutineScope(Dispatchers.IO).launch {
                 database.deleteMarker(id) // Asegúrate de que esta función exista
                 getAllMarkers()
@@ -92,7 +92,7 @@ package com.example.supabasetest.viewmodel
             }
         }
 
-        fun deleteMarkerWithImage(id: String, imageName: String) {
+        fun deleteMarkerWithImage(id: Int, imageName: String) {
             CoroutineScope(Dispatchers.IO).launch {
                 database.deleteImage(imageName) // Asegúrate de que esta función exista
                 database.deleteMarker(id)

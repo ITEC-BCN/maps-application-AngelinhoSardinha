@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import com.example.mapsapp.ui.navigation.Destination.MarkerCreation
 import com.example.mapsapp.ui.screens.CameraScreen
 import com.example.mapsapp.ui.screens.CreateMarkerScreen
-import com.example.mapsapp.ui.screens.DetailMarkerScreen
+import com.example.mapsapp.ui.screens.UpdateMarkerScreen
 import com.example.mapsapp.ui.screens.MapScreen
 import com.example.mapsapp.ui.screens.MarkerListScreen
 
@@ -28,7 +28,7 @@ fun InternalNavigationWrapper(navController: NavHostController, modifier: Modifi
         }
         composable<Destination.List> {
             MarkerListScreen(
-                navigateToDetail = { id ->
+                navigateToUpdate = { id ->
                     navController.navigate(Destination.MarkerDetail(id))
                 }
             )
@@ -49,7 +49,7 @@ fun InternalNavigationWrapper(navController: NavHostController, modifier: Modifi
         }
         composable<Destination.MarkerDetail> {
             val id = it.arguments?.getInt("id") ?: 0
-            DetailMarkerScreen(id,
+            UpdateMarkerScreen(id,
                 NavigateToBack = {
                     navController.navigate(Destination.List) {
                         popUpTo(Destination.List) { inclusive = true }

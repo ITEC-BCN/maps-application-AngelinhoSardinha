@@ -1,6 +1,7 @@
 package com.example.mapsapp.data
 
 
+import android.R.attr.id
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.mapsapp.BuildConfig
@@ -47,7 +48,7 @@ class MySupabaseClient {
         client.from("Marker").insert(marker)
     }
 
-    suspend fun deleteMarker(id: String){
+    suspend fun deleteMarker(id: Int){
         client.from("Marker").delete{ filter { eq("id", id) } }
     }
 
@@ -61,12 +62,11 @@ class MySupabaseClient {
 
     fun buildImageUrl(imageFileName: String) = "${this.supabaseUrl}/storage/v1/object/public/images/${imageFileName}"
 
-    suspend fun updateMarker(id: Int, title: String, description: String, latlng: String, imageName: String, imageFile: ByteArray) {
+    suspend fun updateMarker(id : Int, title: String, description: String, imageName: String, imageFile: ByteArray) {
         val updatedImageName = storage.from("images").update(path = imageName, data = imageFile)
         client.from("Marker").update({
             set("name", title)
             set("description", description)
-            set("latlng", latlng)
             set("image", buildImageUrl(imageFileName = updatedImageName.path))
         }) {
             filter {

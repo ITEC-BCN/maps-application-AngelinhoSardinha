@@ -60,7 +60,7 @@ class SupaBaseViewModel : ViewModel() {
     }
 
 
-    fun updateMarker(id: Int, title: String, description: String, latlng: String, image: Bitmap?) {
+    fun updateMarker(id : Int, title: String, description: String, image: Bitmap?) {
         val stream = ByteArrayOutputStream()
         image?.compress(Bitmap.CompressFormat.PNG, 0, stream)
         val imageName =
@@ -70,7 +70,6 @@ class SupaBaseViewModel : ViewModel() {
                 id,
                 title,
                 description,
-                latlng,
                 imageName.toString(),
                 stream.toByteArray()
             )
@@ -78,11 +77,14 @@ class SupaBaseViewModel : ViewModel() {
     }
 
 
-    fun deleteImatge(id: String, image: String) {
+    fun deleteMarker(id: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            database.deleteImage(image)
             database.deleteMarker(id)
             getAllMarkers()
         }
+    }
+
+    fun getMarkerById(id: Int): Marker? {
+        return markerList.value?.find { it.id == id }
     }
 }

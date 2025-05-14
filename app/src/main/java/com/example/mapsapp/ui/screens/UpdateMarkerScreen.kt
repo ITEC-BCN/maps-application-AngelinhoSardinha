@@ -49,6 +49,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -122,7 +123,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                 TextField(
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text("Título") },
+                    label = { Text("${marker?.name}") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color(0xFF2E7D32),
@@ -137,7 +138,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                 TextField(
                     value = description,
                     onValueChange = { description = it },
-                    label = { Text("Descripción") },
+                    label = { Text("${marker?.description}") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color(0xFF2E7D32),
@@ -155,6 +156,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF43A047))
                 ) {
+                    AsyncImage("${marker?.image}", contentDescription = null)
                     Text(text = "Seleccionar Imagen", color = Color.White)
                 }
 

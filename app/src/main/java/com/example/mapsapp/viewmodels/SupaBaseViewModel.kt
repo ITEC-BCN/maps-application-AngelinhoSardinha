@@ -19,7 +19,7 @@ class SupaBaseViewModel : ViewModel() {
     private val _markerList = MutableLiveData<List<Marker>>()
     val markerList = _markerList
 
-    private val _selectedMarker = MutableLiveData<Marker?>()
+    private val _selectedMarker = MutableLiveData<Marker>()
     val selectedMarker = _selectedMarker
 
     private val _markerName = MutableLiveData<String>()
@@ -84,7 +84,9 @@ class SupaBaseViewModel : ViewModel() {
         }
     }
 
-    fun getMarkerById(id: Int): Marker? {
-        return markerList.value?.find { it.id == id }
+    fun getMarkerById(id: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            _selectedMarker.value = database.getMarkers(id)
+        }
     }
 }

@@ -37,6 +37,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -47,22 +48,29 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
     val supaBaseViewModel: SupaBaseViewModel = viewModel()
-    val marker = supaBaseViewModel.markerList.value?.find { it.id == id }
     val context = LocalContext.current
     val imageUri = remember { mutableStateOf<Uri?>(null) }
     val bitmap = remember { mutableStateOf<Bitmap?>(null) }
     var showDialog by remember { mutableStateOf(false) }
-    var title by remember { mutableStateOf(marker?.name ?: "") }
-    var description by remember { mutableStateOf(marker?.description ?: "") }
-    supaBaseViewModel.getMarkerById(id)
+    val marker by supaBaseViewModel.selectedMarker.observeAsState()
+
+    // Estados locales para los campos de texto
+    var title by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+
+    // Inicializa los valores de los campos cuando el marcador cambia
+    LaunchedEffect(marker) {
+        marker?.let {
+            title = it.name
+            description = it.description
+        }
+    }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
@@ -92,7 +100,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    colors = listOf(Color(0xFF1B5E20), Color(0xFF2E7D32)) // Tonos verde oscuro
+                    colors = listOf(Color(0xFF1B5E20), Color(0xFF2E7D32))
                 )
             )
             .padding(16.dp),
@@ -103,7 +111,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
             text = "Update Marker",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFFC8E6C9) // Verde menta claro
+            color = Color(0xFFC8E6C9)
         )
 
         Card(
@@ -111,7 +119,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                 .fillMaxWidth()
                 .padding(8.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF388E3C)), // Verde intermedio
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF388E3C)),
             elevation = CardDefaults.cardElevation(8.dp)
         ) {
             Column(
@@ -123,7 +131,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                 TextField(
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text("${marker?.name}") },
+                    label = { Text("Nombre del marcador") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color(0xFF2E7D32),
@@ -138,7 +146,7 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                 TextField(
                     value = description,
                     onValueChange = { description = it },
-                    label = { Text("${marker?.description}") },
+                    label = { Text("Descripción del marcador") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color(0xFF2E7D32),
@@ -156,7 +164,6 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF43A047))
                 ) {
-                    AsyncImage("${marker?.image}", contentDescription = null)
                     Text(text = "Seleccionar Imagen", color = Color.White)
                 }
 
@@ -182,23 +189,9 @@ fun UpdateMarkerScreen(id: Int, NavigateToBack: () -> Unit) {
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF66BB6A)) // Verde vivo
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF66BB6A))
         ) {
             Text(text = "Guardar Marcador", color = Color.White)
-        }
-
-        Button(
-            onClick = {
-                supaBaseViewModel.deleteMarker(id)
-                NavigateToBack()
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB71C1C)) // Rojo oscuro para eliminar
-        ) {
-            Text(text = "Eliminar Marcador", color = Color.White)
         }
     }
 

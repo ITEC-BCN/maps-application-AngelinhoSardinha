@@ -36,7 +36,7 @@ class MySupabaseClient {
         return client.from("Marker").select().decodeList<Marker>()
     }
 
-    suspend fun getMarkers(id: String): Marker {
+    suspend fun getMarkers(id: Int): Marker {
         return client.from("Marker").select {
             filter {
                 eq("id", id)
